@@ -3,9 +3,13 @@ library(sf)
 
 rFunction = function(data) {
   
+  # Plot of each individual's home-range area and the population mean. The
+  # numbers for the summary table are taken from a second call below, which
+  # returns them in square meters (with units = TRUE ctmm picks the unit itself)
   pdf(appArtifactPath("akdepop_summary.pdf"))
-  meta <- ctmm::meta(data[[2]], plot = TRUE)
+  ctmm::meta(data[[2]], plot = TRUE)
   dev.off()
+  meta <- ctmm::meta(data[[2]], plot = FALSE, units = FALSE)
   
   # pop means
   MEAN <- mean(data[[2]]) # distribution of the sample
@@ -23,13 +27,34 @@ rFunction = function(data) {
   par(mfrow = c(1,1))
   dev.off()
   
-  s <- rbind(
-    meta[1, , drop = FALSE], 
-    summary(MEAN)$CI[1, , drop = FALSE], 
-    summary(PKDE)$CI[1, , drop = FALSE]) 
-  s1 <- as.data.frame(s, row.names = FALSE)
-  s1[, "units"] <- row.names(s)
-  write.csv(s1, appArtifactPath("akdepop_summary.csv"), row.names = FALSE)
+  # Summary table of the three area estimates (95% contour, with 95% CIs).
+  ci_m2 <- rbind(
+    meta[1, , drop = FALSE],                         # row "mean" of meta()
+    summary(MEAN, units = FALSE)$CI[1, , drop = FALSE],
+    summary(PKDE, units = FALSE)$CI[1, , drop = FALSE]
+  )
+  
+  # Ensure all outputs are in a standard unit. ctmm otherwise picks an
+  # appropriate unit, for each, but this limits comparability
+  ci_km2 <- ci_m2 / 1e6
+
+  summary_table <- data.frame(
+    quantity = c(
+      "mean_individual_area",
+      "sample_range_area",
+      "population_range_area"
+    ),
+    description = c(
+      "Mean home-range area of an individual in the population (ctmm::meta)",
+      "Area of the combined range of the tracked individuals (mean of their UDs)",
+      "Estimated range area of the whole population, including untracked individuals (ctmm::pkde)"
+    ),
+    low = ci_km2[, "low"],
+    est = ci_km2[, "est"],
+    high = ci_km2[, "high"],
+    unit = "square kilometers"
+  )
+  write.csv(summary_table, appArtifactPath("akdepop_summary.csv"), row.names = FALSE)
   
   sf::st_as_sf(ctmm::SpatialPolygonsDataFrame.UD(MEAN, level.UD = 0.95)) |> 
     sf::st_write(appArtifactPath("dist_sample.gpkg"), append = FALSE)

@@ -20,9 +20,13 @@ Please see details of the Populaiton-level Autokorrelated Kernel Density Estimat
 
 ### Artefacts
 
-`akdepop_summary.pdf`: A figure of individual home-range areas at the 95 % isopleth and the mean of all individuals. 
+`akdepop_summary.pdf`: A figure of the home-range area (95 % isopleth) of each individual with its 95 % confidence interval, as also reported in `akde_summary.csv` of the akde App. The bottom row (`mean`) shows the mean home-range area of an individual in the population, i.e. the `mean_individual_area` of `akdepop_summary.csv`. The vertical line marks this mean.
 
-`akdepop_summary.csv`: A summary of the of the mean home-range area (as returned by the function `ctmm::meta()`), the mean home-range area of the sample and the estimated home-range of the population (as returned by the `pkde()`-function). 
+`akdepop_summary.csv`: A table of three area estimates, each at the 95 % isopleth with the lower (`low`) and upper (`high`) bounds of the 95 % confidence interval around the estimate (`est`). All areas are given in square kilometers (column `unit`). The column `quantity` identifies the estimate:
+
+- `mean_individual_area`: The home-range area of an average individual of the population (from `ctmm::meta()`). For example: "in this population, an individual's home range is on average XX km²".
+- `sample_range_area`: The area of the combined range of the tracked individuals (the 95 % contour of the mean of their UDs, from `mean()`). This is the range of the population if the population consisted only of the tracked individuals.
+- `population_range_area`: The estimated range area of the whole population (from `ctmm::pkde()`). It accounts for individuals of the population that were not tracked, and is therefore usually much larger than `sample_range_area`. It is most meaningful if the tracked individuals are a representative sample of the population.
 
 - `dist_of_sample_and_pop.pdf`: A plot of the distribution of samples (i.e. the tracked animals) and the distribution of the population home range (i.e., the population home-range as infered from the sample) as map. 
 
