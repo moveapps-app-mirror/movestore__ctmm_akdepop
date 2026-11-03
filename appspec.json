@@ -1,4 +1,6 @@
 {
+  "version": "1.2",
+  "settings": [],
   "dependencies": {
     "R": [
       {
@@ -9,7 +11,6 @@
       }
     ]
   },
-  "createsArtifacts": true,
   "license": {
     "key": "MIT"
   },
@@ -19,7 +20,7 @@
     "autokorrelated kernel density estimate",
     "akde",
     "pkde",
-    "population home range", 
+    "population home range",
     "ctmm"
   ],
   "people": [
@@ -35,7 +36,7 @@
       "orcid": "0000-0002-3042-5435",
       "affiliation": "Kaldera",
       "affiliationRor": null
-    }, 
+    },
     {
       "firstName": "Johannes",
       "middleInitials": null,
@@ -45,7 +46,7 @@
         "author",
         "creator"
       ],
-      "orcid": "0000-0002-1771-7775" ,
+      "orcid": "0000-0002-1771-7775",
       "affiliation": "University of Goettingen",
       "affiliationRor": "01y9bpm73"
     }
@@ -61,15 +62,11 @@
       "type": "IsDescribedBy",
       "note": "Documentation of the `meta()`-function",
       "url": "https://ctmm-initiative.github.io/ctmm/reference/meta.html"
-    }, 
+    },
     {
       "type": "IsDescribedBy",
       "note": "Documentation of the `pkde()`-function",
       "url": "https://ctmm-initiative.github.io/ctmm/reference/akde.html"
     }
-  ],
-  "documentation": {
-    "url": "https://github.com/ctmm-initiative/ctmmMoveApp_akdepop/blob/main/README.md"
-  }
+  ]
 }
-
