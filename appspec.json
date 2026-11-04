@@ -17,7 +17,7 @@
   "language": "eng",
   "keywords": [
     "home range",
-    "autokorrelated kernel density estimate",
+    "autocorrelated kernel density estimate",
     "akde",
     "pkde",
     "population home range",
@@ -48,7 +48,7 @@
       ],
       "orcid": "0000-0002-1771-7775",
       "affiliation": "University of Goettingen",
-      "affiliationRor": "01y9bpm73"
+      "affiliationRor": "https://ror.org/01y9bpm73"
     },
     {
       "firstName": "Finn",
@@ -65,19 +65,19 @@
   ],
   "funding": [
     {
-      "name": " NSF award 1914928",
+      "name": "NSF award 1914928",
       "comment": "Grant for developing the app"
     }
   ],
   "references": [
     {
       "type": "IsDescribedBy",
-      "note": "Documentation of the `meta()`-function",
+      "note": "Documentation of the `meta()` function",
       "url": "https://ctmm-initiative.github.io/ctmm/reference/meta.html"
     },
     {
       "type": "IsDescribedBy",
-      "note": "Documentation of the `pkde()`-function",
+      "note": "Documentation of the `pkde()` function",
       "url": "https://ctmm-initiative.github.io/ctmm/reference/akde.html"
     }
   ]
