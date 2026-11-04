@@ -17,7 +17,7 @@
   "language": "eng",
   "keywords": [
     "home range",
-    "autokorrelated kernel density estimate",
+    "autocorrelated kernel density estimate",
     "akde",
     "pkde",
     "population home range",
@@ -48,25 +48,47 @@
       ],
       "orcid": "0000-0002-1771-7775",
       "affiliation": "University of Goettingen",
-      "affiliationRor": "01y9bpm73"
+      "affiliationRor": "https://ror.org/01y9bpm73"
+    },
+    {
+      "firstName": "Finn",
+      "middleInitials": null,
+      "lastName": "Roberts",
+      "email": "froberts@ab.mpg.de",
+      "roles": [
+        "contributor"
+      ],
+      "orcid": "0009-0002-6157-3542",
+      "affiliation": "Max Planck Institute of Animal Behavior",
+      "affiliationRor": "https://ror.org/026stee22"
     }
   ],
   "funding": [
     {
-      "name": " NSF award 1914928",
+      "name": "NSF award 1914928",
       "comment": "Grant for developing the app"
     }
   ],
   "references": [
     {
       "type": "IsDescribedBy",
-      "note": "Documentation of the `meta()`-function",
+      "note": "Fleming, C. H., Deznabi, I., Alavi, S., Crofoot, M. C., Hirsch, B. T., Medici, E. P., Noonan, M. J., Kays, R., Fagan, W. F., Sheldon, D., & Calabrese, J. M. (2022). Population-level inference for home-range areas. Methods in Ecology and Evolution, 13(5), 1027-1041.",
+      "url": "https://doi.org/10.1111/2041-210X.13815"
+    },
+    {
+      "type": "IsDocumentedBy",
+      "note": "Documentation of the `meta()` function",
       "url": "https://ctmm-initiative.github.io/ctmm/reference/meta.html"
     },
     {
-      "type": "IsDescribedBy",
-      "note": "Documentation of the `pkde()`-function",
+      "type": "IsDocumentedBy",
+      "note": "Documentation of the `pkde()` function",
       "url": "https://ctmm-initiative.github.io/ctmm/reference/akde.html"
+    },
+    {
+      "type": "Requires",
+      "note": "Calabrese, J. M., Fleming, C. H., & Gurarie, E. (2016). ctmm: An R package for analyzing animal relocation data as a continuous-time stochastic process. Methods in Ecology and Evolution, 7(9), 1124-1132.",
+      "url": "https://CRAN.R-project.org/package=ctmm"
     }
   ]
 }
