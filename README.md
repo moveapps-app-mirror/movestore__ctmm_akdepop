@@ -1,48 +1,136 @@
-# Population Autokorrelated Kernel Density Estimate (PKDE)
+# Population Autocorrelated Kernel Density Estimate (pKDE)
 
 MoveApps
 
-Github repository: https://github.com/ctmm-initiative/ctmmMoveApp_akdepop
+GitHub repository: https://github.com/movestore/ctmm_akdepop
 
 ## Description
-Calculate mean home-range size, the joint home-range of the sample of tracked animals (=distribution of samples) and the population home range.
+Estimate the mean home range area of an individual, the joint home range of
+the tracked animals in the sample, and the range of the whole population from
+the aKDE home ranges of a set of tracked animals.
 
 ## Documentation
-The app starts with a calculated autocorrelated kernel density estimates for several animals and then calculates a population mean home-range size, the joint home-range of the sample and the population home-range (utility distributions = UD).
+This App uses the autocorrelated kernel density estimates (aKDEs) of several
+tracked animals to make population-level estimates. It calculates three
+things:
 
-Please see details of the Populaiton-level Autokorrelated Kernel Density Estimation in the help files of the functions within the ctmm R package: [akde](https://ctmm-initiative.github.io/ctmm/reference/akde.html) and [meta](https://ctmm-initiative.github.io/ctmm/reference/meta.html). 
+1. **The mean home range area of an individual** in the population, with a
+   confidence interval.
+2. **The distribution of the sample**: the joint home range of the sample of
+   tracked animals.
+3. **The distribution of the population**: the estimated range of the whole
+   population, accounting for the fact that the tracked animals constitute
+   a sample of the overall population.
 
-### Input data
-`ctmm UD with Data and Model` including the aKDE UD for all tracks
+This App is part of a ctmm Workflow. You must run the *Autocorrelated
+Kernel Density Estimate (aKDE)* App before this one, as its output is
+necessary to calculate the population estimates.
 
-### Output data
-`ctmm UD with Data and Model` including the pKDE UD and aKDE UDs for all tracks
+See the ctmm documentation of [`meta()`][1], [`pkde()`][2] and the
+[`mean()` method for UDs][3] for more details on the methods.
+
+[1]: https://ctmm-initiative.github.io/ctmm/reference/meta.html
+[2]: https://ctmm-initiative.github.io/ctmm/reference/akde.html
+[3]: https://ctmm-initiative.github.io/ctmm/reference/mean.html
+
+### Application scope
+#### Generality of App usability
+This App was developed for any taxonomic group that displays range-resident
+behavior.
+
+#### Required data properties
+This App is only applicable to data that reflect range-resident behavior. Use
+the *Variogram* App to evaluate whether this property holds for your data.
+
+The input must contain at least 2 animals.
+
+### Input type
+`ctmm UD with Data and Model`: a list with three elements, as produced by the
+*Autocorrelated Kernel Density Estimate (aKDE)* App:
+
+1. `model`: a list containing the selected `ctmm` model for each animal.
+2. `uds`: a list containing the aKDE utilization distribution (UD, an object
+   of class `UD`) for each animal.
+3. `data`: the tracking data (an object of type `telemetry.list`).
+
+### Output type
+`ctmm UD with Data and Model`: the input, unchanged.
 
 ### Artefacts
+`akdepop_summary.csv`: a table of the three area estimates. It contains the
+following columns:
+  - `quantity`: the area being estimated. One of:
+    - `mean_individual_area`: the mean 95% home range area of an individual
+      in the population (from `ctmm::meta()`).
+    - `sample_range_area`: the 95% area of the distribution of the sample,
+      i.e. the joint home range of the tracked animals.
+    - `population_range_area`: the 95% area of the distribution of the
+      population, i.e. the estimated range of the whole population (from
+      `ctmm::pkde()`).
+  - `description`: a short description of the quantity.
+  - `low`, `est`, `high`: the estimated area and the lower and upper bounds of
+    its 95% confidence interval.
+  - `unit`: the unit of the areas (always square kilometers).
 
-`akdepop_summary.pdf`: A figure of the home-range area (95 % isopleth) of each individual with its 95 % confidence interval, as also reported in `akde_summary.csv` of the akde App. The bottom row (`mean`) shows the mean home-range area of an individual in the population, i.e. the `mean_individual_area` of `akdepop_summary.csv`. The vertical line marks this mean.
+`akdepop_summary.pdf`: a comparison of the home range areas for each animal,
+along with their 95% confidence intervals. The bottom row (`mean`) shows the
+mean home range area of an individual (this is `mean_individual_area` from
+`akdepop_summary.csv`).
 
-`akdepop_summary.csv`: A table of three area estimates, each at the 95 % isopleth with the lower (`low`) and upper (`high`) bounds of the 95 % confidence interval around the estimate (`est`). All areas are given in square kilometers (column `unit`). The column `quantity` identifies the estimate:
+`dist_of_sample_and_pop.pdf`: maps showing the distribution of the sample and
+the distribution of the population. Each map shows the tracked locations, the
+density of the distribution, the 95% contour line, and its confidence
+interval.
 
-- `mean_individual_area`: The home-range area of an average individual of the population (from `ctmm::meta()`). For example: "in this population, an individual's home range is on average XX km²".
-- `sample_range_area`: The area of the combined range of the tracked individuals (the 95 % contour of the mean of their UDs, from `mean()`). This is the range of the population if the population consisted only of the tracked individuals.
-- `population_range_area`: The estimated range area of the whole population (from `ctmm::pkde()`). It accounts for individuals of the population that were not tracked, and is therefore usually much larger than `sample_range_area`. It is most meaningful if the tracked individuals are a representative sample of the population.
+`dist_sample.gpkg`, `dist_pop.gpkg`: GeoPackages showing the 95% isopleth
+of the distribution of the sample and of the population, respectively.
+Each contains three polygons: the estimate and the lower and upper bounds
+of its 95% confidence interval. The coordinates are in the local map
+projection that ctmm uses for the tracking data.
 
-- `dist_of_sample_and_pop.pdf`: A plot of the distribution of samples (i.e. the tracked animals) and the distribution of the population home range (i.e., the population home-range as infered from the sample) as map. 
+`dist_sample.tif`, `dist_pop.tif`: the utilization distribution of the sample
+and of the population, respectively, as GeoTIFF rasters. Each cell's value is
+the probability that a randomly chosen animal will be found within the contour
+line passing through that cell. The coordinates are in the local map
+projection that ctmm uses for the tracking data.
 
-- `dist_pop.gpkg`: A geopackage of the population home range at the 95 % isopleth. 
+### Settings
+This App has no settings.
 
-- `dist_pop.tif`: The utilization distribution (UD) of the population home range.
+### Changes in output data
+The input data remain unchanged.
 
-- `dist_sample.gpkg`: A geopackage of the sample home range at the 95 % isopleth. 
+### Errors and null handling
+**Fewer than 2 animals:** Population-level estimates need at least 2 animals.
+If the input contains only one, the App stops with an error.
 
-- `dist_sample.tif`: The utilization distribution (UD) of the sample home range.
+**Performance:** The App fits a population model to the individual models,
+which can take a while for data sets with many animals.
 
-### Settings 
-none
+### Technical details
+The mean home range area of an individual is calculated with
+[`ctmm::meta()`][1] from the 95% home range areas of the individual UDs. The
+distribution of the sample is the average of the individual UDs, calculated
+with ctmm's [`mean()` method for UDs][3]. The distribution of the population
+is calculated with [`ctmm::pkde()`][2] from the tracking data and the
+individual UDs.
 
-### Most common errors
-Please issue an issue [here](https://github.com/ctmm-initiative/ctmmMoveApp_akdepop/issues) if you repeatedly encounter a specific error.
+The areas are calculated with ctmm's `summary()` method for UDs, the contours
+with `ctmm::SpatialPolygonsDataFrame.UD()` and the rasters with ctmm's
+`writeRaster()` method for UDs.
 
-### Null or error handling
-none at the moment
+The population-level inference of home range areas is described in Fleming,
+C. H., Deznabi, I., Alavi, S., Crofoot, M. C., Hirsch, B. T., Medici, E. P.,
+Noonan, M. J., Kays, R., Fagan, W. F., Sheldon, D., & Calabrese, J. M.
+(2022). Population-level inference for home-range areas. *Methods in Ecology
+and Evolution*, 13(5), 1027–1041. https://doi.org/10.1111/2041-210X.13815
+
+The aKDE method is described in Fleming, C. H., Fagan, W. F., Mueller, T.,
+Olson, K. A., Leimgruber, P., & Calabrese, J. M. (2015). Rigorous home range
+estimation with movement data: A new autocorrelated kernel density estimator.
+*Ecology*, 96(5), 1182–1188. https://doi.org/10.1890/14-2010.1
+
+The ctmm package is described in Calabrese, J. M., Fleming, C. H., &
+Gurarie, E. (2016). ctmm: An R package for analyzing animal relocation data as
+a continuous-time stochastic process. *Methods in Ecology and Evolution*,
+7(9), 1124–1132. https://doi.org/10.1111/2041-210X.12559
