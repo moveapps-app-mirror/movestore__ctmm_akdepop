@@ -72,7 +72,13 @@ rFunction <- function(data) {
     unit = "square kilometers"
   )
   write.csv(summary_table, appArtifactPath("akdepop_summary.csv"), row.names = FALSE)
-  
+
+  # ctmm labels the contour polygons with the UD's identity. For these UDs that
+  # would be all animal names joined together (sample) or the name of the first
+  # animal (population), so give them clear names instead.
+  MEAN@info$identity <- "sample"
+  PKDE@info$identity <- "population"
+
   sf::st_as_sf(ctmm::SpatialPolygonsDataFrame.UD(MEAN, level.UD = 0.95)) |> 
     sf::st_write(appArtifactPath("dist_sample.gpkg"), append = FALSE)
   
