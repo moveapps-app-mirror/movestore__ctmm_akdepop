@@ -1,8 +1,18 @@
 library(ctmm)
 library(sf)
 
-rFunction = function(data) {
-  
+rFunction <- function(data) {
+  # Population-level estimates need at least 2 individuals. With only one,
+  # ctmm still returns results, but the population range is meaningless
+  # (it collapses to a tiny area around the locations).
+  n_ind <- length(data[[2]])
+  if (n_ind < 2) {
+    stop(
+      "The input contains ", n_ind, " individual(s). Population-level ",
+      "home-range estimates require UDs of at least 2 individuals."
+    )
+  }
+
   # Plot of each individual's home-range area and the population mean. The
   # numbers for the summary table are taken from a second call below, which
   # returns them in square meters (with units = TRUE ctmm picks the unit itself)
