@@ -4,6 +4,10 @@ MoveApps
 
 GitHub repository: https://github.com/movestore/ctmm_akdepop
 
+<p align="center">
+  <img alt="Maps of the distribution of the sample and of the population" src="readme_thumbnail.png" width="700">
+</p>
+
 ## Description
 Estimate the mean home range area of an individual, the joint home range of
 the tracked animals in the sample, and the range of the whole population from
